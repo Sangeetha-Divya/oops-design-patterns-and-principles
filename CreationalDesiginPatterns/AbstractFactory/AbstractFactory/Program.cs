@@ -1,101 +1,77 @@
-﻿interface IMobilePhone
+//sea animals
+interface animal
 {
-    ISmartPhone GetSmartPhone();
-    INormalPhone GetNormalPhone();
+    public void speak();
 }
-interface ISmartPhone
+class octopus:animal
 {
-    string GetModelDetails();
-}
-interface INormalPhone
-{
-    string GetModelDetails();
-}
-class Nokia : IMobilePhone
-{
-    public ISmartPhone GetSmartPhone()
+    public void speak()
     {
-        return new NokiaPixel();
-    }
-
-    public INormalPhone GetNormalPhone()
-    {
-        return new Nokia1600();
+        Console.WriteLine("Squawck");
     }
 }
-class Samsung : IMobilePhone
+class sharp:animal
 {
-    public ISmartPhone GetSmartPhone()
+    public void speak()
     {
-        return new SamsungGalaxy();
-    }
-
-    public INormalPhone GetNormalPhone()
-    {
-        return new SamsungGuru();
+        Console.WriteLine("Can't speak");
     }
 }
-class NokiaPixel : ISmartPhone
+//land animals
+class cat : animal
 {
-    public string GetModelDetails()
+    public void speak()
     {
-        return "Model: Nokia Pixel\nRAM: 3GB\nCamera: 8MP\n";
+        Console.WriteLine("meow");
     }
 }
-class SamsungGalaxy : ISmartPhone
+class lion : animal
 {
-    public string GetModelDetails()
+    public void speak()
     {
-        return "Model: Samsung Galaxy\nRAM: 2GB\nCamera: 13MP\n";
+        Console.WriteLine("roar");
     }
 }
-class Nokia1600 : INormalPhone
+abstract class abstract_factory
 {
-    public string GetModelDetails()
+    public abstract animal GetAnimal(string name);
+    public static abstract_factory createfactory(string factory)
     {
-        return "Model: Nokia 1600\nRAM: NA\nCamera: NA\n";
+        if (factory == "sea")
+            return new sea_factory();
+        else if (factory =="land")
+            return new land_factory();
+        return null;
     }
 }
-class SamsungGuru : INormalPhone
+class sea_factory: abstract_factory
 {
-    public string GetModelDetails()
+    public override animal GetAnimal(string name)
     {
-        return "Model: Samsung Guru\nRAM: NA\nCamera: NA\n";
+        if (name == "octopus")
+            return new octopus();
+        else if (name == "shark")
+            return new sharp();
+        return null;
     }
 }
-class MobileClient
+class land_factory: abstract_factory
 {
-    ISmartPhone smartPhone;
-    INormalPhone normalPhone;
-
-    public Client(IMobilePhone factory)
+    public override animal GetAnimal(string name)
     {
-        smartPhone = factory.GetSmartPhone();
-        normalPhone = factory.GetNormalPhone();
-    }
-
-    public string GetSmartPhoneModelDetails()
-    {
-        return smartPhone.GetModelDetails();
-    }
-
-    public string GetNormalPhoneModelDetails()
-    {
-        return normalPhone.GetModelDetails();
+        if (name == "lion")
+            return new lion();
+        else if (name == "cat")
+            return new cat();
+        return null;
     }
 }
-class Program
+class program
 {
     static void Main()
     {
-        IMobilePhone nokiaMobilePhone = new Nokia();
-        MobileClient nokiaClient = new MobileClient(nokiaMobilePhone);
-        Console.WriteLine(nokiaClient.GetSmartPhoneModelDetails());
-        Console.WriteLine(nokiaClient.GetNormalPhoneModelDetails());
-
-        IMobilePhone samsungMobilePhone = new Samsung();
-        MobileClient samsungClient = new MobileClient(samsungMobilePhone);
-        Console.WriteLine(samsungClient.GetSmartPhoneModelDetails());
-        Console.WriteLine(samsungClient.GetNormalPhoneModelDetails());
+        abstract_factory obj = abstract_factory.createfactory("sea");
+        abstract_factory obj2 = abstract_factory.createfactory("land");
+        obj.GetAnimal("octopus").speak();
     }
 }
